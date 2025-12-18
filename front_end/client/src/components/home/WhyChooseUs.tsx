@@ -45,7 +45,7 @@ const features = [
 
 export function WhyChooseUs() {
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 text-white">
+    <section className="py-20 bg-primary-900">
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center mb-12">
@@ -53,17 +53,17 @@ export function WhyChooseUs() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold mb-4"
+            className="text-3xl md:text-4xl font-bold text-white mb-4"
           >
-            Tại sao chọn <span className="text-primary-400">MathLearning</span>?
+            Tại sao chọn <span className="text-primary-300">MathLearning</span>?
           </motion.h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-primary-200 max-w-2xl mx-auto text-lg">
             Chúng tôi cam kết mang đến trải nghiệm học tập tốt nhất cho bạn
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -73,12 +73,12 @@ export function WhyChooseUs() {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-primary-500/50 transition-all duration-300">
-                <div className="w-14 h-14 bg-primary-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary-500/30 transition-colors">
-                  <feature.icon className="w-7 h-7 text-primary-400" />
+              <div className="bg-primary-800/50 rounded-2xl p-6 border border-primary-700 hover:bg-primary-800 hover:border-primary-500 transition-all duration-300 h-full">
+                <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary-500/30 transition-colors">
+                  <feature.icon className="w-6 h-6 text-primary-300" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <h3 className="text-lg font-semibold mb-2 text-white">{feature.title}</h3>
+                <p className="text-primary-200 text-sm leading-relaxed">{feature.description}</p>
               </div>
             </motion.div>
           ))}

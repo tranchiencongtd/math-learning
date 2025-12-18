@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { PlayIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { PlayIcon, ArrowRightIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 export function HeroSection() {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+
   return (
     <section className="relative overflow-hidden bg-hero-pattern min-h-[90vh] flex items-center">
       {/* Background decorations */}
@@ -32,10 +36,10 @@ export function HeroSection() {
               🎓 Hơn 10,000 học viên đang học
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Học. Phát triển.
+              Toán thầy Công
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-pink-300">
-                Thành công.
+                ....................
               </span>
             </h1>
             <p className="text-lg text-gray-200 mb-8 max-w-xl">
@@ -51,7 +55,10 @@ export function HeroSection() {
                 Khám phá khóa học
                 <ArrowRightIcon className="w-5 h-5 ml-2" />
               </Link>
-              <button className="btn bg-white/20 text-white border border-white/30 hover:bg-white/30 px-8 py-4 text-lg">
+              <button 
+                onClick={() => setIsVideoOpen(true)}
+                className="btn bg-white/20 text-white border border-white/30 hover:bg-white/30 px-8 py-4 text-lg"
+              >
                 <PlayIcon className="w-5 h-5 mr-2" />
                 Xem giới thiệu
               </button>
@@ -77,17 +84,15 @@ export function HeroSection() {
             className="hidden lg:block"
           >
             <div className="relative">
-              {/* Main card */}
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-                <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center mb-6">
-                  <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
-                    <PlayIcon className="w-10 h-10 text-white ml-1" />
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="h-4 bg-white/20 rounded w-3/4" />
-                  <div className="h-4 bg-white/20 rounded w-1/2" />
-                </div>
+              {/* Main image */}
+              <div className="relative w-full h-[650px]">
+                <Image
+                  src="https://raw.githubusercontent.com/toanthaycong/toanthaycong.github.io/refs/heads/main/assets/images/home/2.png"
+                  alt="Toán thầy Công"
+                  fill
+                  className="object-contain scale-150"
+                  priority
+                />
               </div>
 
               {/* Floating cards */}
@@ -102,7 +107,7 @@ export function HeroSection() {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Hoàn thành</p>
-                    <p className="text-sm text-gray-500">15 khóa học</p>
+                    <p className="text-sm text-gray-500">Khóa học</p>
                   </div>
                 </div>
               </motion.div>
@@ -126,6 +131,41 @@ export function HeroSection() {
           </motion.div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {isVideoOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+            onClick={() => setIsVideoOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-4xl aspect-video"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setIsVideoOpen(false)}
+                className="absolute -top-12 right-0 p-2 text-white hover:text-gray-300 transition-colors"
+              >
+                <XMarkIcon className="w-8 h-8" />
+              </button>
+              <iframe
+                src="https://www.youtube.com/embed/WTx_d1E3Sbo?autoplay=1"
+                title="Video giới thiệu"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full rounded-xl"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -83,12 +83,12 @@ export function Header() {
                   ref={inputRef}
                   type="text"
                   placeholder="Tìm kiếm..."
-                  className="w-full h-9 px-3 text-sm border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none"
+                  className="w-full h-9 px-3 text-sm border border-gray-300 rounded-lg outline-none"
                 />
               </div>
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2.5 text-gray-500 hover:text-primary-500 hover:bg-gray-100 rounded-lg transition-colors ml-1"
+                className="p-2.5 text-gray-500 hover:text-primary-500 hover:bg-gray-100 rounded-xl transition-colors ml-1"
               >
                 <MagnifyingGlassIcon className="h-5 w-5" />
               </button>

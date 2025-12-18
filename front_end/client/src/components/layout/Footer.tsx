@@ -22,10 +22,36 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { name: "Facebook", href: "#", icon: "facebook" },
-  { name: "YouTube", href: "#", icon: "youtube" },
-  { name: "LinkedIn", href: "#", icon: "linkedin" },
-  { name: "Twitter", href: "#", icon: "twitter" },
+  { 
+    name: "Facebook", 
+    href: "#", 
+    icon: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    ),
+    hoverColor: "hover:bg-blue-600"
+  },
+  { 
+    name: "TikTok", 
+    href: "#", 
+    icon: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+      </svg>
+    ),
+    hoverColor: "hover:bg-black"
+  },
+  { 
+    name: "Zalo", 
+    href: "#", 
+    icon: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 17.08c-.18.227-.482.378-.794.378H7.764c-.624 0-.987-.56-.687-1.058l4.03-6.747H7.764a.677.677 0 01-.677-.677v-.474c0-.374.303-.677.677-.677h8.47c.624 0 .987.56.687 1.058l-4.03 6.747h3.343c.374 0 .677.303.677.677v.474a.677.677 0 01-.017.299z"/>
+      </svg>
+    ),
+    hoverColor: "hover:bg-blue-500"
+  },
 ];
 
 export function Footer() {
@@ -52,12 +78,10 @@ export function Footer() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors"
+                  className={`w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center ${item.hoverColor} transition-colors`}
                 >
                   <span className="sr-only">{item.name}</span>
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
-                  </svg>
+                  {item.icon}
                 </a>
               ))}
             </div>
