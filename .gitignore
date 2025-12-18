@@ -1,0 +1,159 @@
+# =========================
+# .NET Backend
+# =========================
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Rider
+.idea/
+
+# MSBuild
+*.log
+msbuild*.binlog
+
+# NuGet
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Build outputs
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# User-specific files
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+
+# Entity Framework migrations artifacts
+**/Migrations/*.Designer.cs
+
+# =========================
+# Node.js / Next.js Frontend
+# =========================
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js
+.next/
+out/
+build/
+
+# Production
+dist/
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local env files
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing
+coverage/
+.nyc_output/
+
+# =========================
+# IDE & Editors
+# =========================
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains
+.idea/
+*.iml
+
+# Vim
+*.swp
+*.swo
+*~
+
+# =========================
+# OS Generated
+# =========================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+# =========================
+# Misc
+# =========================
+
+# Secrets
+*.pfx
+*.key
+*.pem
+secrets.json
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Package lock files (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock
