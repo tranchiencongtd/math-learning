@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bars3Icon,
@@ -20,6 +20,26 @@ const navigation = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Focus input when search opens
+  useEffect(() => {
+    if (searchOpen && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchOpen]);
+
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -43,7 +63,7 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors"
+                className="text-base font-medium text-gray-700 hover:text-primary-500 transition-colors"
               >
                 {item.name}
               </Link>
@@ -52,25 +72,39 @@ export function Header() {
 
           {/* Search & Auth */}
           <div className="flex items-center gap-x-4">
-            {/* Search */}
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 text-gray-500 hover:text-primary-500 transition-colors"
-            >
-              <MagnifyingGlassIcon className="h-5 w-5" />
-            </button>
+            {/* Search - Inline */}
+            <div ref={searchRef} className="relative flex items-center">
+              <div
+                className={`flex items-center overflow-hidden transition-all duration-200 ${
+                  searchOpen ? "w-48 md:w-64" : "w-0"
+                }`}
+              >
+                <input
+                  ref={inputRef}
+                  type="text"
+                  placeholder="Tìm kiếm..."
+                  className="w-full h-9 px-3 text-sm border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none"
+                />
+              </div>
+              <button
+                onClick={() => setSearchOpen(!searchOpen)}
+                className="p-2.5 text-gray-500 hover:text-primary-500 hover:bg-gray-100 rounded-lg transition-colors ml-1"
+              >
+                <MagnifyingGlassIcon className="h-5 w-5" />
+              </button>
+            </div>
 
             {/* Auth Buttons */}
             <div className="hidden sm:flex items-center gap-x-3">
               <Link
                 href="/login"
-                className="text-sm font-medium text-gray-700 hover:text-primary-500 transition-colors"
+                className="text-base font-medium text-gray-700 hover:text-primary-500 transition-colors"
               >
                 Đăng nhập
               </Link>
               <Link
                 href="/register"
-                className="btn btn-primary text-sm py-2 px-4"
+                className="btn btn-primary text-base py-2 px-5"
               >
                 Bắt đầu học
               </Link>
@@ -90,28 +124,6 @@ export function Header() {
             </button>
           </div>
         </div>
-
-        {/* Search Bar */}
-        <AnimatePresence>
-          {searchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="pb-4"
-            >
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm khóa học..."
-                  className="input pr-10"
-                  autoFocus
-                />
-                <MagnifyingGlassIcon className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </nav>
 
       {/* Mobile menu */}
