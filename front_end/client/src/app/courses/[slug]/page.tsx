@@ -164,145 +164,162 @@ export default function CourseDetailPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Course Info */}
-            <div className="lg:col-span-2 space-y-6">
-              <nav className="text-sm text-gray-400">
-                <Link href="/" className="hover:text-white">
-                  Trang chủ
-                </Link>
-                <span className="mx-2">/</span>
-                <Link href="/courses" className="hover:text-white">
-                  Khóa học
-                </Link>
-                <span className="mx-2">/</span>
-                <span className="text-white">Web Development</span>
-              </nav>
-
-              <h1 className="text-3xl lg:text-4xl font-bold">{course.title}</h1>
-
-              <p className="text-lg text-gray-300">{course.description}</p>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm">
-                <div className="flex items-center gap-1">
-                  <StarIcon className="w-5 h-5 text-yellow-400" />
-                  <span className="font-bold">{course.rating}</span>
-                  <span className="text-gray-400">({course.reviewsCount} đánh giá)</span>
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Course Card - Desktop (Sticky like Udemy - outside hero) */}
+      <div className="hidden lg:block fixed right-0 top-0 w-[380px] h-screen z-40 pointer-events-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full relative">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="absolute right-8 top-20 w-[340px] bg-white rounded-lg shadow-2xl overflow-hidden pointer-events-auto"
+          >
+            <div className="relative aspect-video">
+              <Image
+                src={course.thumbnail}
+                alt={course.title}
+                fill
+                className="object-cover"
+              />
+              <button className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/50 transition group">
+                <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <PlayCircleIcon className="w-10 h-10 text-gray-900" />
                 </div>
-                <div className="flex items-center gap-1 text-gray-300">
-                  <UsersIcon className="w-5 h-5" />
-                  <span>{course.studentsCount.toLocaleString()} học viên</span>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Image
-                  src={course.instructor.avatar}
-                  alt={course.instructor.name}
-                  width={48}
-                  height={48}
-                  className="rounded-full"
-                />
-                <div>
-                  <p className="text-sm text-gray-400">Giảng viên</p>
-                  <p className="font-medium">{course.instructor.name}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4 text-sm text-gray-300">
-                <span>Cập nhật: {course.lastUpdated}</span>
-                <span>•</span>
-                <span>{course.language}</span>
-                <span>•</span>
-                <span>{course.level}</span>
+              </button>
+              <div className="absolute bottom-3 left-3 bg-black/70 text-white text-sm px-2 py-1 rounded">
+                Xem trước khóa học
               </div>
             </div>
 
-            {/* Course Card - Desktop */}
-            <div className="hidden lg:block">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-xl shadow-xl overflow-hidden sticky top-24"
-              >
-                <div className="relative aspect-video">
-                  <Image
-                    src={course.thumbnail}
-                    alt={course.title}
-                    fill
-                    className="object-cover"
-                  />
-                  <button className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/50 transition">
-                    <PlayCircleIcon className="w-16 h-16 text-white" />
-                  </button>
+            <div className="p-5 space-y-4">
+              <div className="flex items-baseline gap-3">
+                <span className="text-3xl font-bold text-gray-900">
+                  {formatPrice(course.price)}
+                </span>
+                <span className="text-lg text-gray-400 line-through">
+                  {formatPrice(course.originalPrice)}
+                </span>
+                <span className="text-sm font-medium text-green-600">
+                  -{Math.round((1 - course.price / course.originalPrice) * 100)}%
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 text-sm text-red-600">
+                <ClockIcon className="w-4 h-4" />
+                <span className="font-medium">Còn 2 ngày với mức giá này!</span>
+              </div>
+
+              <div className="space-y-3">
+                <button className="w-full btn bg-primary-500 text-white hover:bg-primary-600 py-3 text-base font-bold">
+                  <ShoppingCartIcon className="w-5 h-5 mr-2" />
+                  Thêm vào giỏ hàng
+                </button>
+                <button className="w-full btn border-2 border-gray-900 text-gray-900 hover:bg-gray-100 py-2.5 font-bold">
+                  Mua ngay
+                </button>
+              </div>
+
+              <p className="text-center text-xs text-gray-500">
+                Đảm bảo hoàn tiền trong 30 ngày
+              </p>
+
+              <div className="border-t pt-4 space-y-2.5 text-sm">
+                <p className="font-bold text-gray-900">Khóa học bao gồm:</p>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <PlayCircleIcon className="w-4 h-4 flex-shrink-0" />
+                  <span>{course.duration} video theo yêu cầu</span>
                 </div>
-
-                <div className="p-6 space-y-4">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-3xl font-bold text-gray-900">
-                      {formatPrice(course.price)}
-                    </span>
-                    <span className="text-lg text-gray-500 line-through">
-                      {formatPrice(course.originalPrice)}
-                    </span>
-                    <span className="text-sm font-medium text-green-600">
-                      -{Math.round((1 - course.price / course.originalPrice) * 100)}%
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    <button className="w-full btn bg-primary-500 text-white hover:bg-primary-600 py-3 text-lg">
-                      <ShoppingCartIcon className="w-5 h-5 mr-2" />
-                      Thêm vào giỏ hàng
-                    </button>
-                    <button className="w-full btn border border-gray-300 text-gray-700 hover:bg-gray-50 py-3">
-                      Mua ngay
-                    </button>
-                  </div>
-
-                  <p className="text-center text-sm text-gray-500">
-                    Đảm bảo hoàn tiền trong 30 ngày
-                  </p>
-
-                  <div className="border-t pt-4 space-y-3 text-sm">
-                    <p className="font-medium text-gray-900">Khóa học bao gồm:</p>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <PlayCircleIcon className="w-5 h-5" />
-                      <span>{course.duration} video theo yêu cầu</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <DocumentTextIcon className="w-5 h-5" />
-                      <span>{totalLessons} bài học</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <ClockIcon className="w-5 h-5" />
-                      <span>Truy cập trọn đời</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <CheckIcon className="w-5 h-5" />
-                      <span>Chứng chỉ hoàn thành</span>
-                    </div>
-                  </div>
-
-                  <button className="w-full flex items-center justify-center gap-2 text-gray-600 hover:text-primary-500">
-                    <HeartIcon className="w-5 h-5" />
-                    <span>Thêm vào danh sách yêu thích</span>
-                  </button>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <DocumentTextIcon className="w-4 h-4 flex-shrink-0" />
+                  <span>{totalLessons} bài học</span>
                 </div>
-              </motion.div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <ClockIcon className="w-4 h-4 flex-shrink-0" />
+                  <span>Truy cập trọn đời</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <CheckIcon className="w-4 h-4 flex-shrink-0" />
+                  <span>Chứng chỉ hoàn thành</span>
+                </div>
+              </div>
+
+              <div className="flex gap-2 pt-2 border-t">
+                <button className="flex-1 flex items-center justify-center gap-2 py-2 text-gray-600 hover:text-primary-500 text-sm">
+                  <HeartIcon className="w-5 h-5" />
+                  <span>Yêu thích</span>
+                </button>
+                <button className="flex-1 flex items-center justify-center gap-2 py-2 text-gray-600 hover:text-primary-500 text-sm">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  <span>Chia sẻ</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <div className="bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:pr-[400px]">
+          <div className="space-y-6">
+            {/* Course Info */}
+            <nav className="text-sm text-gray-400">
+              <Link href="/" className="hover:text-white">
+                Trang chủ
+              </Link>
+              <span className="mx-2">/</span>
+              <Link href="/courses" className="hover:text-white">
+                Khóa học
+              </Link>
+              <span className="mx-2">/</span>
+              <span className="text-white">Web Development</span>
+            </nav>
+
+            <h1 className="text-3xl lg:text-4xl font-bold">{course.title}</h1>
+
+            <p className="text-lg text-gray-300">{course.description}</p>
+
+            <div className="flex flex-wrap items-center gap-4 text-sm">
+              <div className="flex items-center gap-1">
+                <StarIcon className="w-5 h-5 text-yellow-400" />
+                <span className="font-bold">{course.rating}</span>
+                <span className="text-gray-400">({course.reviewsCount} đánh giá)</span>
+              </div>
+              <div className="flex items-center gap-1 text-gray-300">
+                <UsersIcon className="w-5 h-5" />
+                <span>{course.studentsCount.toLocaleString()} học viên</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <Image
+                src={course.instructor.avatar}
+                alt={course.instructor.name}
+                width={48}
+                height={48}
+                className="rounded-full"
+              />
+              <div>
+                <p className="text-sm text-gray-400">Giảng viên</p>
+                <p className="font-medium">{course.instructor.name}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-4 text-sm text-gray-300">
+              <span>Cập nhật: {course.lastUpdated}</span>
+              <span>•</span>
+              <span>{course.language}</span>
+              <span>•</span>
+              <span>{course.level}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:pr-[400px]">
+        <div className="space-y-12">
             {/* What you'll learn */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
@@ -509,10 +526,6 @@ export default function CourseDetailPage() {
                 Xem tất cả đánh giá →
               </button>
             </motion.section>
-          </div>
-
-          {/* Sidebar - empty on lg because card is in hero */}
-          <div className="hidden lg:block" />
         </div>
       </div>
 

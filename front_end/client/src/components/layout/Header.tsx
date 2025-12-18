@@ -95,7 +95,7 @@ export function Header() {
             </div>
 
             {/* Auth Buttons */}
-            <div className="hidden sm:flex items-center gap-x-3">
+            <div className="hidden sm:flex items-center gap-x-4">
               <Link
                 href="/login"
                 className="text-base font-medium text-gray-700 hover:text-primary-500 transition-colors"

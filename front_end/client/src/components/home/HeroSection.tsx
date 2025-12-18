@@ -66,12 +66,12 @@ export function HeroSection() {
 
             {/* Trust badges */}
             <div className="mt-12 pt-8 border-t border-white/20">
-              <p className="text-sm text-gray-300 mb-4">Được tin tưởng bởi các công ty hàng đầu</p>
+              <p className="text-sm text-gray-300 mb-4">Được dạy bởi các thầy cô nhiều kinh nghiệm</p>
               <div className="flex items-center gap-8 opacity-60">
-                <div className="text-white text-xl font-bold">Microsoft</div>
-                <div className="text-white text-xl font-bold">Google</div>
-                <div className="text-white text-xl font-bold">Amazon</div>
-                <div className="text-white text-xl font-bold">Meta</div>
+                <div className="text-white text-xl font-bold">Thầy Trần Chiến</div>
+                <div className="text-white text-xl font-bold">Thầy Công</div>
+                <div className="text-white text-xl font-bold">Cô Hạnh</div>
+                <div className="text-white text-xl font-bold">...</div>
               </div>
             </div>
           </motion.div>

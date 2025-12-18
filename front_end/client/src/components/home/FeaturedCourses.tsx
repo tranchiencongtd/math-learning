@@ -74,7 +74,7 @@ const formatPrice = (price: number) => {
 
 export function FeaturedCourses() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="pb-20 pt-10 bg-gray-50">
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center mb-12">
