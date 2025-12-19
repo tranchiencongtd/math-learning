@@ -161,7 +161,7 @@ public static class SeedData
             },
             new Category
             {
-                Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                Id = Guid.Parse("33333333-3333-3333-3333-333333333334"),
                 Name = "Xác Suất Thống Kê",
                 Slug = "xac-suat-thong-ke",
                 Description = "Xác suất và thống kê ứng dụng",

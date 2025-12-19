@@ -21,5 +21,4 @@ public class Lesson : BaseEntity, IAuditableEntity
     // Navigation properties
     public virtual Section Section { get; set; } = null!;
     public virtual ICollection<LessonProgress> LessonProgresses { get; set; } = new List<LessonProgress>();
-    public virtual Quiz? Quiz { get; set; }
 }
