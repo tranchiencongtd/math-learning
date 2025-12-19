@@ -17,4 +17,5 @@ public record CourseDetailDto : CourseDto
     public DateTime? UpdatedAt { get; init; }
     public List<SectionDto> Sections { get; init; } = new();
     public List<string> Tags { get; init; } = new();
+    public List<ReviewDto> Reviews { get; init; } = new();
 }

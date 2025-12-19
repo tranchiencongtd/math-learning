@@ -27,6 +27,8 @@ public class GetCourseBySlugQueryHandler : IRequestHandler<GetCourseBySlugQuery,
                 .ThenInclude(s => s.Lessons.OrderBy(l => l.DisplayOrder))
             .Include(c => c.CourseTags)
                 .ThenInclude(ct => ct.Tag)
+            .Include(c => c.Reviews.Where(r => r.IsApproved).OrderByDescending(r => r.CreatedAt).Take(10))
+                .ThenInclude(r => r.User)
             .FirstOrDefaultAsync(c => 
                 c.Slug == request.Slug && 
                 c.Status == CourseStatus.Published && 
@@ -37,7 +39,17 @@ public class GetCourseBySlugQueryHandler : IRequestHandler<GetCourseBySlugQuery,
         var dto = _mapper.Map<CourseDetailDto>(course);
         return dto with 
         { 
-            Tags = course.CourseTags.Select(ct => ct.Tag.Name).ToList() 
+            Tags = course.CourseTags.Select(ct => ct.Tag.Name).ToList(),
+            Reviews = course.Reviews.Select(r => new ReviewDto
+            {
+                Id = r.Id,
+                Rating = r.Rating,
+                Comment = r.Comment,
+                UserName = $"{r.User.LastName} {r.User.FirstName}",
+                UserAvatar = r.User.AvatarUrl,
+                HelpfulCount = r.HelpfulCount,
+                CreatedAt = r.CreatedAt
+            }).ToList()
         };
     }
 }

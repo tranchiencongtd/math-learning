@@ -1,69 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { StarIcon, ClockIcon, UserGroupIcon } from "@heroicons/react/24/solid";
-
-// Mock data - will be replaced with API call
-const featuredCourses = [
-  {
-    id: 1,
-    title: "Complete Web Development Bootcamp 2024",
-    slug: "complete-web-development-bootcamp",
-    instructor: "Nguyễn Văn A",
-    thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop",
-    price: 1499000,
-    discountPrice: 499000,
-    rating: 4.8,
-    totalStudents: 15420,
-    duration: 52,
-    level: "Beginner",
-    category: "Web Development",
-  },
-  {
-    id: 2,
-    title: "Machine Learning A-Z: AI, Python & R",
-    slug: "machine-learning-az",
-    instructor: "Trần Thị B",
-    thumbnail: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=250&fit=crop",
-    price: 1999000,
-    discountPrice: 699000,
-    rating: 4.9,
-    totalStudents: 8750,
-    duration: 45,
-    level: "Intermediate",
-    category: "Data Science",
-  },
-  {
-    id: 3,
-    title: "React Native - Build Mobile Apps",
-    slug: "react-native-mobile-apps",
-    instructor: "Lê Văn C",
-    thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop",
-    price: 1299000,
-    discountPrice: 399000,
-    rating: 4.7,
-    totalStudents: 6200,
-    duration: 38,
-    level: "Intermediate",
-    category: "Mobile Development",
-  },
-  {
-    id: 4,
-    title: "AWS Certified Solutions Architect",
-    slug: "aws-certified-solutions-architect",
-    instructor: "Phạm Thị D",
-    thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=250&fit=crop",
-    price: 2499000,
-    discountPrice: 899000,
-    rating: 4.9,
-    totalStudents: 12300,
-    duration: 65,
-    level: "Advanced",
-    category: "Cloud Computing",
-  },
-];
+import { coursesApi } from "@/lib/api";
+import { Course } from "@/types";
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -73,6 +16,74 @@ const formatPrice = (price: number) => {
 };
 
 export function FeaturedCourses() {
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFeaturedCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await coursesApi.getFeatured(8);
+        setCourses(response.data);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching featured courses:", err);
+        setError("Không thể tải khóa học. Vui lòng thử lại sau.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedCourses();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="pb-20 pt-10 bg-gray-50">
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="section-title mb-4">
+              Khóa học <span className="gradient-text">nổi bật</span>
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="card animate-pulse">
+                <div className="aspect-video bg-gray-200 rounded-t-xl" />
+                <div className="p-5 space-y-3">
+                  <div className="h-4 bg-gray-200 rounded w-3/4" />
+                  <div className="h-3 bg-gray-200 rounded w-1/2" />
+                  <div className="h-3 bg-gray-200 rounded w-1/4" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="pb-20 pt-10 bg-gray-50">
+        <div className="container-custom text-center">
+          <p className="text-red-500">{error}</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (courses.length === 0) {
+    return (
+      <section className="pb-20 pt-10 bg-gray-50">
+        <div className="container-custom text-center">
+          <p className="text-gray-500">Chưa có khóa học nổi bật nào.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="pb-20 pt-10 bg-gray-50">
       <div className="container-custom">
@@ -93,7 +104,7 @@ export function FeaturedCourses() {
 
         {/* Course Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredCourses.map((course, index) => (
+          {courses.map((course, index) => (
             <motion.div
               key={course.id}
               initial={{ opacity: 0, y: 20 }}
@@ -106,14 +117,14 @@ export function FeaturedCourses() {
                   {/* Thumbnail */}
                   <div className="relative aspect-video overflow-hidden">
                     <Image
-                      src={course.thumbnail}
+                      src={course.thumbnailUrl || "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop"}
                       alt={course.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-3 left-3">
                       <span className="px-3 py-1 bg-primary-500 text-white text-xs font-medium rounded-full">
-                        {course.category}
+                        {course.categoryName}
                       </span>
                     </div>
                     {course.discountPrice && (
@@ -126,17 +137,17 @@ export function FeaturedCourses() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5">
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-500 transition-colors">
+                  <div className="p-5 flex flex-col">
+                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12 group-hover:text-primary-500 transition-colors">
                       {course.title}
                     </h3>
-                    <p className="text-sm text-gray-500 mb-3">{course.instructor}</p>
+                    <p className="text-sm text-gray-500 mb-3 truncate">{course.instructorName}</p>
 
                     {/* Stats */}
                     <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                       <div className="flex items-center gap-1">
                         <StarIcon className="w-4 h-4 text-yellow-400" />
-                        <span className="font-medium text-gray-900">{course.rating}</span>
+                        <span className="font-medium text-gray-900">{course.averageRating.toFixed(1)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <UserGroupIcon className="w-4 h-4" />
@@ -144,12 +155,12 @@ export function FeaturedCourses() {
                       </div>
                       <div className="flex items-center gap-1">
                         <ClockIcon className="w-4 h-4" />
-                        <span>{course.duration}h</span>
+                        <span>{Math.round(course.durationInMinutes / 60)}h</span>
                       </div>
                     </div>
 
                     {/* Price */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 mt-auto">
                       <span className="text-lg font-bold text-primary-500">
                         {formatPrice(course.discountPrice || course.price)}
                       </span>

@@ -15,6 +15,7 @@ public static class SeedData
             await SeedUsersAsync(context);
             await SeedCoursesAsync(context);
             await SeedTagsAsync(context);
+            await SeedReviewsAsync(context);
 
             logger.LogInformation("Seed data completed successfully.");
         }
@@ -432,8 +433,8 @@ public static class SeedData
                 Slug = "toan-tu-duy-cho-be-6-8-tuoi",
                 Description = "Khóa học Toán tư duy dành cho trẻ em 6-8 tuổi. Phát triển tư duy logic, khả năng giải quyết vấn đề thông qua các bài toán vui nhộn và trò chơi.",
                 ShortDescription = "Phát triển tư duy Toán cho bé",
-                ThumbnailUrl = "https://img.youtube.com/vi/VLdvPHZRmvE/maxresdefault.jpg",
-                PreviewVideoUrl = "https://www.youtube.com/watch?v=VLdvPHZRmvE",
+                ThumbnailUrl = "https://img.youtube.com/vi/pTnEG_WGd2Q/maxresdefault.jpg",
+                PreviewVideoUrl = "https://www.youtube.com/watch?v=wE5xtxXnhgU",
                 Price = 299000,
                 DiscountPrice = 199000,
                 Level = CourseLevel.Beginner,
@@ -706,6 +707,92 @@ public static class SeedData
         };
 
         await context.Tags.AddRangeAsync(tags);
+        await context.SaveChangesAsync();
+    }
+
+    private static async Task SeedReviewsAsync(ApplicationDbContext context)
+    {
+        if (await context.Reviews.AnyAsync()) return;
+
+        var studentId1 = Guid.Parse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee");
+        var studentId2 = Guid.Parse("ffffffff-ffff-ffff-ffff-ffffffffffff");
+
+        var reviews = new List<Review>
+        {
+            // Reviews for Course 1: Giải Tích 12 (each user only reviews once per course)
+            new Review
+            {
+                Id = Guid.NewGuid(),
+                Rating = 5,
+                Comment = "Khóa học tuyệt vời! Thầy giảng rất dễ hiểu, có nhiều bài tập thực hành. Sau khóa học mình đã tự tin hơn rất nhiều khi làm bài thi.",
+                IsApproved = true,
+                HelpfulCount = 24,
+                UserId = studentId1,
+                CourseId = Guid.Parse("10000000-0000-0000-0000-000000000001"),
+                CreatedAt = DateTime.UtcNow.AddDays(-14)
+            },
+            new Review
+            {
+                Id = Guid.NewGuid(),
+                Rating = 5,
+                Comment = "Nội dung đầy đủ từ cơ bản đến nâng cao. Recommend cho ai muốn học Giải tích 12 từ đầu.",
+                IsApproved = true,
+                HelpfulCount = 18,
+                UserId = studentId2,
+                CourseId = Guid.Parse("10000000-0000-0000-0000-000000000001"),
+                CreatedAt = DateTime.UtcNow.AddDays(-30)
+            },
+
+            // Reviews for Course 2: Đại Số Tuyến Tính
+            new Review
+            {
+                Id = Guid.NewGuid(),
+                Rating = 5,
+                Comment = "Là sinh viên năm nhất, mình thấy khóa học này giúp mình hiểu rõ hơn rất nhiều so với học trên lớp. Cảm ơn cô!",
+                IsApproved = true,
+                HelpfulCount = 32,
+                UserId = studentId2,
+                CourseId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
+                CreatedAt = DateTime.UtcNow.AddDays(-10)
+            },
+            new Review
+            {
+                Id = Guid.NewGuid(),
+                Rating = 5,
+                Comment = "Phần không gian vector và ánh xạ tuyến tính được giảng rất kỹ. Đáng đồng tiền bát gạo!",
+                IsApproved = true,
+                HelpfulCount = 28,
+                UserId = studentId1,
+                CourseId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
+                CreatedAt = DateTime.UtcNow.AddDays(-25)
+            },
+
+            // Reviews for Course 5: Luyện Thi THPT
+            new Review
+            {
+                Id = Guid.NewGuid(),
+                Rating = 5,
+                Comment = "Mình đã tăng từ 6 điểm lên 8.5 điểm sau khi học khóa này. Các mẹo giải nhanh trắc nghiệm rất hữu ích!",
+                IsApproved = true,
+                HelpfulCount = 56,
+                UserId = studentId1,
+                CourseId = Guid.Parse("10000000-0000-0000-0000-000000000005"),
+                CreatedAt = DateTime.UtcNow.AddDays(-7)
+            },
+            new Review
+            {
+                Id = Guid.NewGuid(),
+                Rating = 5,
+                Comment = "Thầy dạy rất tận tâm, giải đáp thắc mắc nhanh chóng. Khóa học xứng đáng 5 sao!",
+                IsApproved = true,
+                HelpfulCount = 45,
+                UserId = studentId2,
+                CourseId = Guid.Parse("10000000-0000-0000-0000-000000000005"),
+                CreatedAt = DateTime.UtcNow.AddDays(-20)
+            }
+        };
+
+        await context.Reviews.AddRangeAsync(reviews);
         await context.SaveChangesAsync();
     }
 }

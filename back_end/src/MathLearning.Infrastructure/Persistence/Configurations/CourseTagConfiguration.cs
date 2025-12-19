@@ -24,5 +24,8 @@ public class CourseTagConfiguration : IEntityTypeConfiguration<CourseTag>
             .WithMany(t => t.CourseTags)
             .HasForeignKey(ct => ct.TagId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Add query filter to match Course's filter
+        builder.HasQueryFilter(ct => !ct.Course.IsDeleted);
     }
 }

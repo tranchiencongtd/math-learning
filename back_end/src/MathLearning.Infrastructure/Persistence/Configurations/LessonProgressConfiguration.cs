@@ -27,5 +27,8 @@ public class LessonProgressConfiguration : IEntityTypeConfiguration<LessonProgre
             .WithMany(l => l.LessonProgresses)
             .HasForeignKey(lp => lp.LessonId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Add query filter to match Lesson's filter
+        builder.HasQueryFilter(lp => !lp.Lesson.IsDeleted);
     }
 }
