@@ -166,12 +166,12 @@ export default function CourseDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50 relative">
       {/* Course Card - Desktop (Sticky like Udemy - outside hero) */}
-      <div className="hidden lg:block fixed right-0 top-0 w-[380px] h-screen z-40 pointer-events-none">
+      <div className="hidden lg:block fixed inset-x-0 top-0 h-[calc(100vh-80px)] z-40 pointer-events-none">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full relative">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="absolute right-8 top-20 w-[340px] bg-white rounded-lg shadow-2xl overflow-hidden pointer-events-auto"
+            className="absolute right-8 top-20 w-[340px] max-h-[calc(100vh-120px)] overflow-y-auto bg-white rounded-lg shadow-2xl pointer-events-auto"
           >
             <div className="relative aspect-video">
               <Image
@@ -180,10 +180,8 @@ export default function CourseDetailPage() {
                 fill
                 className="object-cover"
               />
-              <button className="absolute inset-0 flex items-center justify-center bg-black/40 hover:bg-black/50 transition group">
-                <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <PlayCircleIcon className="w-10 h-10 text-gray-900" />
-                </div>
+              <button className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition group">
+                <PlayCircleIcon className="w-16 h-16 text-white drop-shadow-lg group-hover:scale-110 transition-transform" />
               </button>
               <div className="absolute bottom-3 left-3 bg-black/70 text-white text-sm px-2 py-1 rounded">
                 Xem trước khóa học
