@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -149,6 +149,10 @@ const formatPrice = (price: number) => {
 
 export default function CourseDetailPage() {
   const [expandedSections, setExpandedSections] = useState<string[]>(["1"]);
+  const [cardStyle, setCardStyle] = useState<"fixed" | "absolute">("fixed");
+  const [cardBottom, setCardBottom] = useState<number | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections((prev) =>
@@ -163,15 +167,55 @@ export default function CourseDetailPage() {
     0
   );
 
+  // Stop card at content bottom (before footer)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (contentRef.current && cardRef.current) {
+        const contentRect = contentRef.current.getBoundingClientRect();
+        const cardHeight = cardRef.current.offsetHeight;
+        const cardTopOffset = 80; // top-20 = 80px
+        const buffer = 20; // padding before footer
+        
+        // Calculate where card bottom would be if fixed
+        const cardBottomIfFixed = cardTopOffset + cardHeight;
+        
+        // If content bottom is above card bottom position, switch to absolute
+        if (contentRect.bottom < cardBottomIfFixed + buffer) {
+          setCardStyle("absolute");
+          // Calculate the absolute bottom position
+          const contentBottom = contentRef.current.offsetTop + contentRef.current.offsetHeight;
+          setCardBottom(contentBottom - cardHeight - buffer);
+        } else {
+          setCardStyle("fixed");
+          setCardBottom(null);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    handleScroll(); // Check initial state
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 relative">
-      {/* Course Card - Desktop (Sticky like Udemy - outside hero) */}
-      <div className="hidden lg:block fixed inset-x-0 top-0 h-[calc(100vh-80px)] z-40 pointer-events-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full relative">
+      {/* Course Card - Desktop (Sticky like Udemy) */}
+      <div 
+        className={`hidden lg:block ${cardStyle === "fixed" ? "fixed inset-x-0 top-0" : ""} z-40 pointer-events-none`}
+        style={cardStyle === "absolute" ? { position: "absolute", top: cardBottom ?? 0, left: 0, right: 0 } : undefined}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative h-full">
           <motion.div
+            ref={cardRef}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="absolute right-8 top-20 w-[340px] max-h-[calc(100vh-120px)] overflow-y-auto bg-white rounded-lg shadow-2xl pointer-events-auto"
+            className={`${
+              cardStyle === "fixed" ? "absolute right-8 top-20" : "absolute right-8"
+            } w-[340px] max-h-[calc(100vh-120px)] overflow-y-auto bg-white rounded-lg shadow-2xl pointer-events-auto`}
           >
             <div className="relative aspect-video">
               <Image
@@ -316,7 +360,7 @@ export default function CourseDetailPage() {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:pr-[400px]">
+      <div ref={contentRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:pr-[400px]">
         <div className="space-y-12">
             {/* What you'll learn */}
             <motion.section
