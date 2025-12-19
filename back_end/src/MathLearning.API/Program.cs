@@ -102,12 +102,18 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Apply migrations on startup in development
+// Apply migrations and seed data on startup in development
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    
     await context.Database.MigrateAsync();
+    
+    // Seed sample data
+    await SeedData.SeedAsync(context, logger);
 }
 
 app.Run();
